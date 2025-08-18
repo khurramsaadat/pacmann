@@ -2,8 +2,6 @@
 
 A modern, responsive implementation of the classic Pac-Man game using HTML5 Canvas and JavaScript.
 
-![Pac-Man Game](https://raw.githubusercontent.com/khurramsaadat/pac-man/main/preview.png)
-
 ## 🎮 Features
 
 - **Classic Gameplay**: Authentic Pac-Man experience with dots, power pellets, and ghosts
@@ -56,8 +54,6 @@ A modern, responsive implementation of the classic Pac-Man game using HTML5 Canv
    ```
 
 ### Playing Online
-
-Visit [https://khurramsaadat.github.io/pac-man](https://khurramsaadat.github.io/pac-man) to play directly in your browser.
 
 ## 🎯 Scoring System
 

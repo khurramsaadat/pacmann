@@ -138,6 +138,41 @@
             text-shadow: 0 0 8px currentColor;
         }
 
+        .scoring-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .score-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 0, 255, 0.3);
+        }
+
+        .score-item p {
+            margin: 0;
+        }
+
+        .objective-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 0, 255, 0.3);
+        }
+
+        .objective-content p {
+            margin: 0;
+            flex: 1;
+        }
+
         h2 {
             color: #00ffff;
             font-size: 1.5em;
@@ -166,6 +201,72 @@
             color: #00ffff;
             position: absolute;
             left: -15px;
+        }
+
+        .character {
+            width: 32px;
+            height: 32px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .pacman {
+            width: 40px;
+            height: 40px;
+            background-image: url('pacman.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: -4px auto 4px;
+        }
+
+        .ghost {
+            border-radius: 16px 16px 0 0;
+            position: relative;
+        }
+
+        .ghost::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: currentColor;
+            clip-path: polygon(
+                0% 0%, 25% 100%, 50% 0%, 75% 100%, 100% 0%
+            );
+        }
+
+        .ghost-red { background-color: #ff0000; color: #ff0000; }
+        .ghost-pink { background-color: #ffb8ff; color: #ffb8ff; }
+        .ghost-cyan { background-color: #00ffff; color: #00ffff; }
+        .ghost-orange { background-color: #ffb852; color: #ffb852; }
+        .ghost-blue { 
+            background-color: #0000ff; 
+            color: #0000ff;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #ffff00;
+            border-radius: 50%;
+            margin: 12px auto;
+        }
+
+        .power-pellet {
+            width: 16px;
+            height: 16px;
+            background: #ffff00;
+            border-radius: 50%;
+            margin: 8px auto;
+            animation: pulse 0.5s linear infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
         }
 
         @media (max-width: 768px) {
@@ -210,7 +311,10 @@
         <div class="rules-grid">
             <div class="rule-item">
                 <h2>🎯 Objective</h2>
-                <p>Guide Pac-Man through the maze to eat all dots while avoiding ghosts. Complete all dots to advance to the next level!</p>
+                <div class="objective-content">
+                    <div class="character pacman"></div>
+                    <p>Guide Pac-Man through the maze to eat all dots while avoiding ghosts. Complete all dots to advance to the next level!</p>
+                </div>
             </div>
             
             <div class="rule-item">
@@ -225,11 +329,20 @@
 
             <div class="rule-item">
                 <h2>💠 Scoring</h2>
-                <ul>
-                    <li>Small Dot: 10 points</li>
-                    <li>Power Pellet: 50 points</li>
-                    <li>Ghost: 200 points (when blue)</li>
-                </ul>
+                <div class="scoring-list">
+                    <div class="score-item">
+                        <div class="dot"></div>
+                        <p>Small Dot: 10 points</p>
+                    </div>
+                    <div class="score-item">
+                        <div class="power-pellet"></div>
+                        <p>Power Pellet: 50 points</p>
+                    </div>
+                    <div class="score-item">
+                        <div class="character ghost ghost-blue"></div>
+                        <p>Ghost: 200 points (when blue)</p>
+                    </div>
+                </div>
             </div>
 
             <div class="rule-item ghost-section">
@@ -237,28 +350,28 @@
                 <div class="ghost-info">
                     <div class="ghost-item">
                         <div class="ghost-name">
-                            <span class="ghost-icon" style="color: #ff0000;">👻</span>
+                            <div class="character ghost ghost-red"></div>
                             <h3>Blinky</h3>
                         </div>
                         <p>The leader in red. Aggressively pursues Pac-Man directly. Gets faster as dots are eaten. Known as "Shadow" for his relentless pursuit.</p>
                     </div>
                     <div class="ghost-item">
                         <div class="ghost-name">
-                            <span class="ghost-icon" style="color: #ffb8ff;">👻</span>
+                            <div class="character ghost ghost-pink"></div>
                             <h3>Pinky</h3>
                         </div>
                         <p>The pink ghost. Tries to ambush by targeting the space in front of Pac-Man. Works with Blinky to trap you. Known as "Speedy".</p>
                     </div>
                     <div class="ghost-item">
                         <div class="ghost-name">
-                            <span class="ghost-icon" style="color: #00ffff;">👻</span>
+                            <div class="character ghost ghost-cyan"></div>
                             <h3>Inky</h3>
                         </div>
                         <p>The cyan/blue ghost. Most unpredictable. Movement based on both Pac-Man and Blinky's positions. Known as "Bashful".</p>
                     </div>
                     <div class="ghost-item">
                         <div class="ghost-name">
-                            <span class="ghost-icon" style="color: #ffb852;">👻</span>
+                            <div class="character ghost ghost-orange"></div>
                             <h3>Clyde</h3>
                         </div>
                         <p>The orange ghost. Patrols his corner and occasionally chases. Moves away when close to Pac-Man. Known as "Pokey".</p>
@@ -267,10 +380,10 @@
                 <div class="ghost-states">
                     <h3>Ghost States:</h3>
                     <ul>
-                        <li><span style="color: inherit;">👻</span> Normal: Chase or scatter based on their personality</li>
-                        <li><span style="color: #0000ff;">👻</span> Frightened: Turn blue and flee when Pac-Man eats a Power Pellet</li>
-                        <li><span style="color: #ffffff;">👻</span> Blinking: Warning that frightened state is ending soon</li>
-                        <li><span style="color: #cccccc;">👻</span> Eyes: Return to ghost house after being eaten</li>
+                        <li><div class="character ghost ghost-red"></div> Normal: Chase or scatter based on their personality</li>
+                        <li><div class="character ghost ghost-blue"></div> Frightened: Turn blue and flee when Pac-Man eats a Power Pellet</li>
+                        <li><div class="character ghost" style="background-color: #ffffff; color: #ffffff;"></div> Blinking: Warning that frightened state is ending soon</li>
+                        <li><div class="character ghost" style="background-color: #cccccc; color: #cccccc;"></div> Eyes: Return to ghost house after being eaten</li>
                     </ul>
                 </div>
             </div>
