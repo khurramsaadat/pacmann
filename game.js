@@ -261,16 +261,29 @@ function updateUI() {
 
 // Start game
 function startGame() {
-    document.getElementById('startScreen').style.display = 'none';
-    gameState = 'playing';
-    gameLoop();
+    if (gameState === 'start') {
+        gameState = 'playing';
+        document.querySelector('.start-prompt').style.display = 'none';
+        gameLoop();
+    }
 }
 
 // Restart game
 function restartGame() {
+    // Hide both game over and pause screens
     document.getElementById('gameOverScreen').style.display = 'none';
+    document.getElementById('pauseScreen').style.display = 'none';
+    
+    // Reset game state and start fresh
     initGame();
-    startGame();
+    gameState = 'playing';
+    gameLoop();
+    
+    // Reset all ghosts to their original colors and modes
+    ghosts[0].color = '#ff0000'; ghosts[0].mode = 'scatter';
+    ghosts[1].color = '#ffb8ff'; ghosts[1].mode = 'scatter';
+    ghosts[2].color = '#00ffff'; ghosts[2].mode = 'scatter';
+    ghosts[3].color = '#ffb852'; ghosts[3].mode = 'scatter';
 }
 
 // Resume game
@@ -448,9 +461,9 @@ function moveGhosts() {
             ghost.x = newX;
             ghost.y = newY;
 
-            // Handle tunnel
-            if (ghost.x < 0) ghost.x = MAZE_WIDTH - 1;
-            if (ghost.x >= MAZE_WIDTH) ghost.x = 0;
+                    // Handle tunnel teleport
+        if (ghost.x <= 0 && ghost.direction === 2) ghost.x = MAZE_WIDTH - 1;
+        if (ghost.x >= MAZE_WIDTH - 1 && ghost.direction === 0) ghost.x = 0;
         }
     });
 }
@@ -645,8 +658,8 @@ function movePacman() {
         pacman.y = newY;
 
         // Handle tunnel (wrap around)
-        if (pacman.x < 0) pacman.x = MAZE_WIDTH - 1;
-        if (pacman.x >= MAZE_WIDTH) pacman.x = 0;
+        if (pacman.x <= 0 && pacman.direction === 2) pacman.x = MAZE_WIDTH - 1;
+        if (pacman.x >= MAZE_WIDTH - 1 && pacman.direction === 0) pacman.x = 0;
 
         // Collect dots and power pellets
         if (maze[pacman.y][pacman.x] === DOT) {
@@ -675,9 +688,20 @@ function movePacman() {
 // Handle keyboard input
 function handleInput() {
     document.addEventListener('keydown', (e) => {
-        if (gameState !== 'playing' && gameState !== 'paused') return;
-
         switch (e.key) {
+            case ' ':
+                e.preventDefault();
+                if (gameState === 'start') {
+                    startGame();
+                }
+                break;
+            case 'Escape':
+                e.preventDefault();
+                if (gameState === 'playing') {
+                    gameState = 'paused';
+                    document.getElementById('pauseScreen').style.display = 'block';
+                }
+                break;
             case 'ArrowRight':
             case 'd':
             case 'D':
@@ -697,16 +721,6 @@ function handleInput() {
             case 'w':
             case 'W':
                 if (gameState === 'playing') pacman.nextDirection = 3;
-                break;
-            case ' ':
-                e.preventDefault();
-                if (gameState === 'playing') {
-                    gameState = 'paused';
-                    document.getElementById('pauseScreen').style.display = 'block';
-                } else if (gameState === 'paused') {
-                    gameState = 'playing';
-                    document.getElementById('pauseScreen').style.display = 'none';
-                }
                 break;
         }
     });
@@ -752,10 +766,19 @@ function handleInput() {
 
 // Game loop
 function gameLoop(currentTime) {
-    if (gameState === 'playing') {
-        // Clear canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Always draw the maze
+    drawMaze();
+
+    if (gameState === 'start') {
+        // In start state, just show the static maze with Pacman and Ghosts
+        drawPacman();
+        drawGhosts();
+        
+        // Game is ready to start
+    } else if (gameState === 'playing') {
         // Update game logic based on timing
         if (currentTime - lastMoveTime > gameSpeed) {
             movePacman();
@@ -768,8 +791,7 @@ function gameLoop(currentTime) {
         // Update particles
         updateParticles();
 
-        // Draw everything
-        drawMaze();
+        // Draw game elements
         drawPacman();
         drawGhosts();
         drawParticles();
@@ -800,6 +822,8 @@ window.addEventListener('load', () => {
     initAudio();
     initGame();
     handleInput();
+    // Start the game loop immediately to show the maze
+    requestAnimationFrame(gameLoop);
 });
 
 // Handle window resize
