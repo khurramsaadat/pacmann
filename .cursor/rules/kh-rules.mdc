@@ -1,0 +1,5 @@
+---
+alwaysApply: true
+---
+Always read PRD.md and rules.md files
+USE MCP server Playwright to test the game and fix the issues.

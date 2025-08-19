@@ -27,16 +27,84 @@ A modern web-based implementation of the classic Pac-Man arcade game, featuring 
 - **Additional Features**: Rules page, character legend, visual feedback
 
 ### Mobile Experience
-- **Controls**: Swipe gestures for movement
-- **Pause**: Two-finger tap
-- **Start**: Single tap
-- **Display**: Fullscreen mode available
-- **Orientation**: Landscape mode optimized
-- **Touch Features**: 
-  - Gesture controls
-  - Fullscreen mode
-  - Touch-optimized UI elements
-  - No zoom/scroll interference
+
+#### Controls & Interaction
+- **Movement**: 
+  - Swipe gestures in four directions (up, down, left, right)
+  - Minimum swipe distance: 30px for activation
+  - Responsive directional change
+  - No diagonal movement support
+
+#### Game Interface
+- **Start Game**: 
+  - Single tap anywhere on screen
+  - No spacebar prompt shown on mobile
+  - Immediate game start response
+
+#### Pause Functionality
+- **Activation**: Two-finger tap gesture
+- **Menu Display**: 
+  - Centered pause menu
+  - Resume and Restart options
+  - Touch-optimized button sizes
+
+#### Fullscreen Mode
+- **Activation**:
+  - Dedicated fullscreen button (⤢)
+  - Located in top-left corner
+  - Exit button (⤡) shown in fullscreen mode
+- **Layout**:
+  - Game centered in viewport
+  - Score/Lives/Level in vertical column on right
+  - Semi-transparent background (0.7 opacity)
+  - Proper spacing from game edge (20px)
+
+#### Orientation Handling
+- **Landscape Mode**:
+  - Automatic orientation lock
+  - Optimized game board visibility
+  - Adjusted UI element positioning
+  - Hidden legend in fullscreen mode
+
+#### Touch Optimizations
+- **Event Handling**:
+  - Prevented zoom gestures
+  - Blocked scroll interference
+  - Touch event debouncing
+  - Proper event cleanup
+
+#### Visual Feedback
+- **UI Elements**:
+  - Touch-friendly button sizes (min 32px)
+  - Clear visual states (normal/pressed)
+  - High contrast for visibility
+  - Proper touch target spacing
+
+#### Performance
+- **Touch Response**:
+  - < 50ms input latency
+  - Smooth animation transitions
+  - Efficient event processing
+  - Memory-conscious event listeners
+
+#### Mobile-Specific Features
+- **Audio**:
+  - User interaction required for audio
+  - Proper audio context handling
+  - Mobile-optimized volume levels
+  - Background audio support
+
+#### Browser Support
+- **Compatibility**:
+  - Chrome for Android
+  - Safari for iOS
+  - Samsung Internet
+  - Mobile Firefox
+- **Features**:
+  - Fullscreen API support
+  - Touch Events API
+  - Screen Orientation API
+  - Mobile viewport meta tag
 
 ## Game Features
 

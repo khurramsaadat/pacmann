@@ -108,9 +108,6 @@ async function toggleFullscreen() {
 
 // Prevent default touch behaviors in fullscreen
 
-// Handle fullscreen button click
-fullscreenButton.addEventListener('click', toggleFullscreen);
-
 // Prevent default touch behaviors in fullscreen
 document.addEventListener('touchmove', (e) => {
     if (document.fullscreenElement) {
@@ -202,4 +199,4 @@ document.addEventListener('touchend', (e) => {
 });
 
 // Initial button state
-updateFullscreenButton();
+handleFullscreenChange();

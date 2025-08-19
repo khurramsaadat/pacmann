@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pacman Game</title>
     <link rel="icon" type="image/png" href="pacman.png">
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Pacman Game">
+    <meta name="description" content="Play the classic Pac-Man arcade game with modern features. Collect dots, avoid ghosts, and chase high scores in this web-based version.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pacman-game.com/">
+    <meta property="og:title" content="Pacman Game">
+    <meta property="og:description" content="Play the classic Pac-Man arcade game with modern features. Collect dots, avoid ghosts, and chase high scores in this web-based version.">
+    <meta property="og:image" content="/preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://pacman-game.com/">
+    <meta property="twitter:title" content="Pacman Game">
+    <meta property="twitter:description" content="Play the classic Pac-Man arcade game with modern features. Collect dots, avoid ghosts, and chase high scores in this web-based version.">
+    <meta property="twitter:image" content="/preview.png">
     <style>
         body {
             margin: 0;
@@ -65,20 +83,50 @@
             flex: 1;
         }
 
+        :fullscreen .game-container,
+        :-webkit-full-screen .game-container,
+        :-moz-full-screen .game-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        :fullscreen .ui,
+        :-webkit-full-screen .ui,
+        :-moz-full-screen .ui {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto;
+            z-index: 1000;
+        }
+
         :fullscreen .game-stats-content,
         :-webkit-full-screen .game-stats-content,
         :-moz-full-screen .game-stats-content {
-            position: fixed;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+            display: flex;
             flex-direction: column;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
             border-radius: 8px;
             font-size: 14px;
-            z-index: 1000;
+            text-align: right;
+        }
+
+        :fullscreen .exit-fullscreen-button,
+        :-webkit-full-screen .exit-fullscreen-button,
+        :-moz-full-screen .exit-fullscreen-button {
+            margin-top: 10px;
+            align-self: center;
+        }
+
+        :fullscreen .start-prompt,
+        :-webkit-full-screen .start-prompt,
+        :-moz-full-screen .start-prompt {
+            display: none;
         }
 
         :fullscreen .score,
@@ -474,14 +522,24 @@
         }
 
         @media (orientation: landscape) {
-            :fullscreen .game-stats-content,
-            :-webkit-full-screen .game-stats-content,
-            :-moz-full-screen .game-stats-content {
-                right: 20px;
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(5px);
-                border: 1px solid rgba(255, 255, 0, 0.3);
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            :fullscreen .game-info,
+            :-webkit-full-screen .game-info,
+            :-moz-full-screen .game-info {
+                display: none;
+            }
+
+            :fullscreen .game-container,
+            :-webkit-full-screen .game-container,
+            :-moz-full-screen .game-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            :fullscreen canvas,
+            :-webkit-full-screen canvas,
+            :-moz-full-screen canvas {
+                margin-right: 80px;
             }
         }
 

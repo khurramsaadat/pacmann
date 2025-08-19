@@ -85,12 +85,7 @@ const directions = [
 
 // Initialize audio
 function initAudio() {
-    // Only create audio context after user interaction
-    document.addEventListener('click', initAudioContext);
-    document.addEventListener('keydown', initAudioContext);
-    document.addEventListener('touchstart', initAudioContext);
-    
-    // Handle page visibility changes
+    // We'll initialize the audio context only when needed
     document.addEventListener('visibilitychange', handleVisibilityChange);
 }
 
@@ -100,10 +95,8 @@ function handleVisibilityChange() {
     }
 }
 
-async function initAudioContext(event) {
-    // Only initialize on user interaction
-    if (!event || !event.isTrusted) return;
-
+async function initAudioContext() {
+    // Only create context if it doesn't exist
     if (!audioContext) {
         try {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -112,9 +105,9 @@ async function initAudioContext(event) {
             return;
         }
     }
-    
-    // Resume audio context if it was suspended
-    if (audioContext && audioContext.state === 'suspended') {
+
+    // Resume context if suspended
+    if (audioContext.state === 'suspended') {
         try {
             await audioContext.resume();
         } catch (e) {
@@ -122,12 +115,7 @@ async function initAudioContext(event) {
         }
     }
 
-    // Remove event listeners once audio is initialized
-    if (audioContext && audioContext.state === 'running') {
-        document.removeEventListener('click', initAudioContext);
-        document.removeEventListener('keydown', initAudioContext);
-        document.removeEventListener('touchstart', initAudioContext);
-    }
+    return audioContext;
 }
 
 // Create sound effect
@@ -168,30 +156,39 @@ async function createSound(frequency, duration, type = 'sine') {
 
 // Play sound effects
 async function playSound(soundType) {
-    if (!audioContext || audioContext.state !== 'running') {
-        await initAudioContext();
-    }
+    try {
+        // Initialize audio context on first user interaction
+        if (!audioContext || audioContext.state !== 'running') {
+            await initAudioContext();
+            // If still no audio context after initialization, return silently
+            if (!audioContext || audioContext.state !== 'running') {
+                return;
+            }
+        }
 
-    switch (soundType) {
-        case 'dot':
-            await createSound(800, 0.1);
-            break;
-        case 'powerPellet':
-            await createSound(400, 0.3);
-            break;
-        case 'eatGhost':
-            await createSound(600, 0.5);
-            break;
-        case 'death':
-            await createSound(200, 1.0, 'sawtooth');
-            break;
-        case 'levelComplete':
-            await createSound(1000, 0.2);
-            await new Promise(resolve => setTimeout(resolve, 200));
-            await createSound(1200, 0.2);
-            await new Promise(resolve => setTimeout(resolve, 200));
-            await createSound(1400, 0.2);
-            break;
+        switch (soundType) {
+            case 'dot':
+                await createSound(800, 0.1);
+                break;
+            case 'powerPellet':
+                await createSound(400, 0.3);
+                break;
+            case 'eatGhost':
+                await createSound(600, 0.5);
+                break;
+            case 'death':
+                await createSound(200, 1.0, 'sawtooth');
+                break;
+            case 'levelComplete':
+                await createSound(1000, 0.2);
+                await new Promise(resolve => setTimeout(resolve, 200));
+                await createSound(1200, 0.2);
+                await new Promise(resolve => setTimeout(resolve, 200));
+                await createSound(1400, 0.2);
+                break;
+        }
+    } catch (e) {
+        console.log('Audio playback error:', e);
     }
 }
 
