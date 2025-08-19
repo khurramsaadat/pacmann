@@ -25,9 +25,36 @@ const exitFullscreenButton = document.querySelector('.exit-fullscreen-button');
 // Make sure the buttons exist and are visible on mobile
 if (fullscreenButton && exitFullscreenButton && 'ontouchstart' in window) {
     fullscreenButton.style.display = 'flex';
+    exitFullscreenButton.style.display = 'none';
     
-    // Add click handler for exit fullscreen button
+    // Add click handlers for fullscreen buttons
+    fullscreenButton.addEventListener('click', toggleFullscreen);
     exitFullscreenButton.addEventListener('click', toggleFullscreen);
+
+    // Add fullscreen change event listeners
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+}
+
+// Handle fullscreen state changes
+function handleFullscreenChange() {
+    const gameContainer = document.querySelector('.game-container');
+    const isFullscreen = document.fullscreenElement || 
+                        document.webkitFullscreenElement || 
+                        document.mozFullScreenElement || 
+                        document.msFullscreenElement;
+
+    if (isFullscreen) {
+        gameContainer.classList.add('fullscreen');
+        fullscreenButton.style.display = 'none';
+        exitFullscreenButton.style.display = 'flex';
+    } else {
+        gameContainer.classList.remove('fullscreen');
+        fullscreenButton.style.display = 'flex';
+        exitFullscreenButton.style.display = 'none';
+    }
 }
 
 // Handle fullscreen changes
@@ -35,17 +62,22 @@ async function toggleFullscreen() {
     const gameContainer = document.querySelector('.game-container');
     
     try {
-        if (!document.fullscreenElement) {
+        const isFullscreen = document.fullscreenElement || 
+                            document.webkitFullscreenElement || 
+                            document.mozFullScreenElement || 
+                            document.msFullscreenElement;
+
+        if (!isFullscreen) {
             // Enter fullscreen
             if (gameContainer.requestFullscreen) {
                 await gameContainer.requestFullscreen();
             } else if (gameContainer.webkitRequestFullscreen) {
                 await gameContainer.webkitRequestFullscreen();
+            } else if (gameContainer.mozRequestFullScreen) {
+                await gameContainer.mozRequestFullScreen();
             } else if (gameContainer.msRequestFullscreen) {
                 await gameContainer.msRequestFullscreen();
             }
-            
-            gameContainer.classList.add('fullscreen');
             
             // Try to lock orientation
             if (screen.orientation && screen.orientation.lock) {
@@ -61,27 +93,20 @@ async function toggleFullscreen() {
                 await document.exitFullscreen();
             } else if (document.webkitExitFullscreen) {
                 await document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                await document.mozCancelFullScreen();
             } else if (document.msExitFullscreen) {
                 await document.msExitFullscreen();
             }
-            
-            gameContainer.classList.remove('fullscreen');
         }
     } catch (err) {
         console.log('Fullscreen API error:', err);
     }
 }
 
-// Update button visibility
-function updateFullscreenButton() {
-    fullscreenButton.style.display = document.fullscreenElement ? 'none' : 'block';
-}
+// Remove old update function as it's replaced by handleFullscreenChange
 
-// Event listeners for fullscreen changes
-document.addEventListener('fullscreenchange', updateFullscreenButton);
-document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
-document.addEventListener('mozfullscreenchange', updateFullscreenButton);
-document.addEventListener('MSFullscreenChange', updateFullscreenButton);
+// Prevent default touch behaviors in fullscreen
 
 // Handle fullscreen button click
 fullscreenButton.addEventListener('click', toggleFullscreen);
