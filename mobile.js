@@ -21,6 +21,11 @@ const fullscreenAPI = {
 // Get the existing fullscreen button
 const fullscreenButton = document.querySelector('.fullscreen-button');
 
+// Make sure the button exists and is visible on mobile
+if (fullscreenButton && 'ontouchstart' in window) {
+    fullscreenButton.style.display = 'flex';
+}
+
 // Handle fullscreen changes
 async function toggleFullscreen() {
     const gameContainer = document.querySelector('.game-container');

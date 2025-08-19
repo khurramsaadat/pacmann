@@ -347,7 +347,7 @@
         }
 
         .mobile-only {
-            display: none !important;
+            display: none;
         }
 
         .fullscreen-button {
@@ -362,13 +362,17 @@
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             white-space: nowrap;
-            display: none;
             width: 24px;
             height: 24px;
             line-height: 1;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
         }
 
         .fullscreen {
@@ -395,11 +399,12 @@
             .mobile-controls {
                 display: block !important;
             }
-            .mobile-only {
+            .mobile-only, .fullscreen-button {
                 display: flex !important;
             }
-            .fullscreen-button {
-                margin-right: 5px;
+            .game-stats {
+                padding-left: 40px;
+                position: relative;
             }
         }
             text-shadow: 0 0 8px #00ffff;
