@@ -177,8 +177,9 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 0 20px rgba(0, 0, 255, 0.3);
-            width: 800px;
-            max-width: 100%;
+            width: 772px; /* 800px - (2 * 15px padding + 2 * 2px border) = game board width */
+            max-width: calc(100% - 34px); /* Account for padding and border */
+            box-sizing: border-box;
         }
 
         .legend-header {
@@ -335,6 +336,19 @@
             font-size: 14px;
             margin: 0;
             opacity: 0.8;
+        }
+
+        .mobile-controls {
+            display: none;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .desktop-controls {
+                display: none;
+            }
+            .mobile-controls {
+                display: block;
+            }
         }
             text-shadow: 0 0 8px #00ffff;
         }
@@ -679,7 +693,8 @@
                 </div>
             </div>
             <div class="controls-hint">
-                <p>Use Arrow Keys or WASD to move • ESC to pause</p>
+                <p class="desktop-controls">Use Arrow Keys or WASD to move • ESC to pause</p>
+                <p class="mobile-controls">Tap to start • Swipe to move • Two-finger tap to pause</p>
             </div>
         </div>
         

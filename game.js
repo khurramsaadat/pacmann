@@ -728,40 +728,61 @@ function handleInput() {
     // Touch controls for mobile
     let touchStartX = 0;
     let touchStartY = 0;
+    let touchStartTime = 0;
 
-    canvas.addEventListener('touchstart', (e) => {
+    // Handle game start on mobile
+    canvas.addEventListener('click', (e) => {
         e.preventDefault();
+        if (gameState === 'start') {
+            startGame();
+        }
+    });
+
+    document.addEventListener('touchstart', (e) => {
         const touch = e.touches[0];
         touchStartX = touch.clientX;
         touchStartY = touch.clientY;
-    });
+        touchStartTime = Date.now();
+    }, { passive: false });
 
-    canvas.addEventListener('touchend', (e) => {
-        e.preventDefault();
+    document.addEventListener('touchend', (e) => {
+        if (gameState === 'start') {
+            startGame();
+            return;
+        }
+
         if (gameState !== 'playing') return;
 
         const touch = e.changedTouches[0];
         const deltaX = touch.clientX - touchStartX;
         const deltaY = touch.clientY - touchStartY;
-        const minSwipeDistance = 30;
+        const touchDuration = Date.now() - touchStartTime;
+        const minSwipeDistance = 50;
+        const maxSwipeTime = 300;
 
-        if (Math.abs(deltaX) > Math.abs(deltaY)) {
-            // Horizontal swipe
-            if (Math.abs(deltaX) > minSwipeDistance) {
+        // Only process quick swipes
+        if (touchDuration <= maxSwipeTime) {
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+                // Horizontal swipe
                 pacman.nextDirection = deltaX > 0 ? 0 : 2; // Right or Left
-            }
-        } else {
-            // Vertical swipe
-            if (Math.abs(deltaY) > minSwipeDistance) {
+                e.preventDefault();
+            } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > minSwipeDistance) {
+                // Vertical swipe
                 pacman.nextDirection = deltaY > 0 ? 1 : 3; // Down or Up
+                e.preventDefault();
             }
         }
-    });
+    }, { passive: false });
 
-    // Prevent scrolling on touch
-    canvas.addEventListener('touchmove', (e) => {
-        e.preventDefault();
-    });
+    // Add touch control for pause
+    document.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2 && gameState === 'playing') {
+            // Two-finger tap to pause
+            gameState = 'paused';
+            document.getElementById('pauseScreen').style.display = 'block';
+            e.preventDefault();
+        }
+    }, { passive: false });
 }
 
 // Game loop
