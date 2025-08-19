@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pacman Game</title>
+    <link rel="icon" type="image/png" href="pacman.png">
     <style>
         body {
             margin: 0;
@@ -250,20 +251,20 @@
         }
 
         .character {
-            width: 32px;
-            height: 32px;
+            width: 22px;  /* Reduced by 30% from 32px */
+            height: 22px; /* Reduced by 30% from 32px */
             position: relative;
         }
 
         .character.pacman {
-            width: 32px;
-            height: 32px;
+            width: 22px;  /* Reduced by 30% from 32px */
+            height: 22px; /* Reduced by 30% from 32px */
             filter: brightness(1.2) saturate(1.5);
         }
 
         .pacman {
-            width: 32px;
-            height: 32px;
+            width: 22px;  /* Reduced by 30% from 32px */
+            height: 22px; /* Reduced by 30% from 32px */
             background-image: url('pacman.png');
             background-size: contain;
             background-repeat: no-repeat;
@@ -304,19 +305,19 @@
         }
 
         .dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;  /* Reduced by 30% from 8px */
+            height: 6px; /* Reduced by 30% from 8px */
             background: #ffff00;
             border-radius: 50%;
-            margin: 12px;
+            margin: 8px;  /* Adjusted margin */
         }
 
         .power-pellet {
-            width: 16px;
-            height: 16px;
+            width: 11px;  /* Reduced by 30% from 16px */
+            height: 11px; /* Reduced by 30% from 16px */
             background: #ffff00;
             border-radius: 50%;
-            margin: 8px;
+            margin: 6px;  /* Adjusted margin */
             animation: pulse 0.5s linear infinite alternate;
         }
 
@@ -342,11 +343,36 @@
             display: none;
         }
 
+        .mobile-only {
+            display: none !important;
+        }
+
+        .fullscreen-button {
+            background: linear-gradient(45deg, #ffff00, #ffff80);
+            color: #000;
+            border: 2px solid #ffff00;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .fullscreen-button:hover {
+            background: linear-gradient(45deg, #ffffff, #ffff00);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+        }
+
         @media (hover: none) and (pointer: coarse) {
-            .desktop-controls {
+            .desktop-controls, .start-prompt {
                 display: none;
             }
-            .mobile-controls {
+            .mobile-controls, .mobile-only {
                 display: block;
             }
         }
@@ -641,6 +667,7 @@
                 <span class="score">Score: <span id="score">0</span></span>
                 <span class="lives">Lives: <span id="lives">3</span></span>
                 <span class="level">Level: <span id="level">1</span></span>
+                <button class="fullscreen-button mobile-only">📱 PLAY FULLSCREEN</button>
             </div>
         </div>
         
@@ -694,7 +721,12 @@
             </div>
             <div class="controls-hint">
                 <p class="desktop-controls">Use Arrow Keys or WASD to move • ESC to pause</p>
-                <p class="mobile-controls">Tap to start • Swipe to move • Two-finger tap to pause</p>
+                <p class="mobile-controls">
+                    • Tap screen to start<br>
+                    • Swipe up/down/left/right to move<br>
+                    • Two-finger tap to pause<br>
+                    • Tap fullscreen button for better experience
+                </p>
             </div>
         </div>
         
@@ -714,5 +746,9 @@
     </div>
 
     <script src="game.js"></script>
+    <script src="mobile.js"></script>
+    <footer style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; padding: 10px; font-size: 12px; color: rgba(255, 255, 255, 0.5); background: transparent;">
+        © 2025 Pac-Man Game made by Khurram
+    </footer>
 </body>
 </html>

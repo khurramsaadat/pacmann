@@ -18,11 +18,8 @@ const fullscreenAPI = {
              document.msFullscreenEnabled
 };
 
-// Create fullscreen button
-const fullscreenButton = document.createElement('button');
-fullscreenButton.className = 'fullscreen-button';
-fullscreenButton.innerHTML = '📱 Play Fullscreen';
-document.body.appendChild(fullscreenButton);
+// Get the existing fullscreen button
+const fullscreenButton = document.querySelector('.fullscreen-button');
 
 // Handle fullscreen changes
 function toggleFullscreen() {
@@ -77,10 +74,82 @@ document.addEventListener('touchend', (e) => {
     }
 }, { passive: false });
 
+// Swipe gesture handling
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+let touchCount = 0;
+
+document.addEventListener('touchstart', (e) => {
+    touchCount = e.touches.length;
+    if (touchCount === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    } else if (touchCount === 2) {
+        // Two-finger tap for pause
+        if (typeof togglePause === 'function') {
+            togglePause();
+        }
+    }
+});
+
+document.addEventListener('touchmove', (e) => {
+    if (touchCount === 1) {
+        touchEndX = e.touches[0].clientX;
+        touchEndY = e.touches[0].clientY;
+    }
+});
+
+document.addEventListener('touchend', (e) => {
+    if (touchCount === 1) {
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+        const minSwipeDistance = 30; // Minimum distance for swipe
+
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            // Horizontal swipe
+            if (Math.abs(diffX) > minSwipeDistance) {
+                if (diffX > 0) {
+                    // Right swipe
+                    if (typeof handleKeyPress === 'function') {
+                        handleKeyPress({ key: 'ArrowRight' });
+                    }
+                } else {
+                    // Left swipe
+                    if (typeof handleKeyPress === 'function') {
+                        handleKeyPress({ key: 'ArrowLeft' });
+                    }
+                }
+            }
+        } else {
+            // Vertical swipe
+            if (Math.abs(diffY) > minSwipeDistance) {
+                if (diffY > 0) {
+                    // Down swipe
+                    if (typeof handleKeyPress === 'function') {
+                        handleKeyPress({ key: 'ArrowDown' });
+                    }
+                } else {
+                    // Up swipe
+                    if (typeof handleKeyPress === 'function') {
+                        handleKeyPress({ key: 'ArrowUp' });
+                    }
+                }
+            }
+        }
+    }
+    touchCount = 0;
+});
+
+// Single tap to start
+document.addEventListener('touchend', (e) => {
+    if (e.touches.length === 0 && touchCount === 1) {
+        if (typeof startGame === 'function' && !gameStarted) {
+            startGame();
+        }
+    }
+});
+
 // Initial button state
 updateFullscreenButton();
-
-// Hide fullscreen button on desktop
-if (!('ontouchstart' in window)) {
-    fullscreenButton.style.display = 'none';
-}

@@ -85,10 +85,19 @@ const directions = [
 
 // Initialize audio
 function initAudio() {
-    try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    } catch (e) {
-        console.log('Web Audio API not supported');
+    // Only create audio context after user interaction
+    document.addEventListener('click', initAudioContext, { once: true });
+    document.addEventListener('keydown', initAudioContext, { once: true });
+    document.addEventListener('touchstart', initAudioContext, { once: true });
+}
+
+function initAudioContext() {
+    if (!audioContext) {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.log('Web Audio API not supported');
+        }
     }
 }
 
