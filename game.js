@@ -100,7 +100,10 @@ function handleVisibilityChange() {
     }
 }
 
-async function initAudioContext() {
+async function initAudioContext(event) {
+    // Only initialize on user interaction
+    if (!event || !event.isTrusted) return;
+
     if (!audioContext) {
         try {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -111,12 +114,19 @@ async function initAudioContext() {
     }
     
     // Resume audio context if it was suspended
-    if (audioContext.state === 'suspended') {
+    if (audioContext && audioContext.state === 'suspended') {
         try {
             await audioContext.resume();
         } catch (e) {
             console.log('Could not resume audio context:', e);
         }
+    }
+
+    // Remove event listeners once audio is initialized
+    if (audioContext && audioContext.state === 'running') {
+        document.removeEventListener('click', initAudioContext);
+        document.removeEventListener('keydown', initAudioContext);
+        document.removeEventListener('touchstart', initAudioContext);
     }
 }
 

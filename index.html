@@ -49,14 +49,26 @@
             max-width: 100%;
         }
 
-        .game-stats {
+        .game-stats-container {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: flex-start;
             align-items: center;
-            position: relative;
-            padding-left: 10px;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .game-stats-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+
+        .game-stats {
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .rules-link {
@@ -362,17 +374,18 @@
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             white-space: nowrap;
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             line-height: 1;
             display: none;
             align-items: center;
             justify-content: center;
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .fullscreen-button {
+                display: flex;
+            }
         }
 
         .fullscreen {
@@ -695,10 +708,14 @@
     <div class="game-container">
         <div class="ui">
             <div class="game-stats">
-                <button class="fullscreen-button mobile-only">⤢</button>
-                <span class="score">Score: <span id="score">0</span></span>
-                <span class="lives">Lives: <span id="lives">3</span></span>
-                <span class="level">Level: <span id="level">1</span></span>
+                <div class="game-stats-container">
+                    <button class="fullscreen-button">⤢</button>
+                    <div class="game-stats-content">
+                        <span class="score">Score: <span id="score">0</span></span>
+                        <span class="lives">Lives: <span id="lives">3</span></span>
+                        <span class="level">Level: <span id="level">1</span></span>
+                    </div>
+                </div>
             </div>
         </div>
         
