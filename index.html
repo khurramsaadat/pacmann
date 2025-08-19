@@ -58,11 +58,40 @@
 
         .game-stats-content {
             display: flex;
-            gap: 30px;
+            gap: 20px;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
             flex: 1;
+        }
+
+        :fullscreen .game-stats-content,
+        :-webkit-full-screen .game-stats-content,
+        :-moz-full-screen .game-stats-content {
+            position: fixed;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        :fullscreen .score,
+        :fullscreen .lives,
+        :fullscreen .level,
+        :-webkit-full-screen .score,
+        :-webkit-full-screen .lives,
+        :-webkit-full-screen .level,
+        :-moz-full-screen .score,
+        :-moz-full-screen .lives,
+        :-moz-full-screen .level {
+            font-size: 14px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         .game-stats {
@@ -441,6 +470,19 @@
             padding: 0 !important;
             border: none !important;
             border-radius: 0 !important;
+            position: relative !important;
+        }
+
+        @media (orientation: landscape) {
+            :fullscreen .game-stats-content,
+            :-webkit-full-screen .game-stats-content,
+            :-moz-full-screen .game-stats-content {
+                right: 20px;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(5px);
+                border: 1px solid rgba(255, 255, 0, 0.3);
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            }
         }
 
         .fullscreen-button:hover {
