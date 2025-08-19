@@ -18,12 +18,16 @@ const fullscreenAPI = {
              document.msFullscreenEnabled
 };
 
-// Get the existing fullscreen button
+// Get the fullscreen buttons
 const fullscreenButton = document.querySelector('.fullscreen-button');
+const exitFullscreenButton = document.querySelector('.exit-fullscreen-button');
 
-// Make sure the button exists and is visible on mobile
-if (fullscreenButton && 'ontouchstart' in window) {
+// Make sure the buttons exist and are visible on mobile
+if (fullscreenButton && exitFullscreenButton && 'ontouchstart' in window) {
     fullscreenButton.style.display = 'flex';
+    
+    // Add click handler for exit fullscreen button
+    exitFullscreenButton.addEventListener('click', toggleFullscreen);
 }
 
 // Handle fullscreen changes

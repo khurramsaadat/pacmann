@@ -382,10 +382,54 @@
             justify-content: center;
         }
 
+        .exit-fullscreen-button {
+            background: linear-gradient(45deg, #ffff00, #ffff80);
+            color: #000;
+            border: 2px solid #ffff00;
+            padding: 4px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            width: 32px;
+            height: 32px;
+            line-height: 1;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
         @media (hover: none) and (pointer: coarse) {
             .fullscreen-button {
                 display: flex;
             }
+        }
+
+        :fullscreen .fullscreen-button {
+            display: none !important;
+        }
+
+        :fullscreen .exit-fullscreen-button {
+            display: flex !important;
+        }
+
+        :-webkit-full-screen .fullscreen-button {
+            display: none !important;
+        }
+
+        :-webkit-full-screen .exit-fullscreen-button {
+            display: flex !important;
+        }
+
+        :-moz-full-screen .fullscreen-button {
+            display: none !important;
+        }
+
+        :-moz-full-screen .exit-fullscreen-button {
+            display: flex !important;
         }
 
         .fullscreen {
@@ -709,7 +753,8 @@
         <div class="ui">
             <div class="game-stats">
                 <div class="game-stats-container">
-                    <button class="fullscreen-button">⤢</button>
+                    <button class="fullscreen-button" title="Enter fullscreen">⤢</button>
+                    <button class="exit-fullscreen-button" title="Exit fullscreen">⤡</button>
                     <div class="game-stats-content">
                         <span class="score">Score: <span id="score">0</span></span>
                         <span class="lives">Lives: <span id="lives">3</span></span>
