@@ -51,9 +51,12 @@
 
         .game-stats {
             display: flex;
-            gap: 30px;
+            gap: 20px;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+            padding-left: 10px;
         }
 
         .rules-link {
@@ -351,15 +354,32 @@
             background: linear-gradient(45deg, #ffff00, #ffff80);
             color: #000;
             border: 2px solid #ffff00;
-            padding: 4px 8px;
-            font-size: 12px;
+            padding: 4px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             border-radius: 4px;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            display: none;
+            width: 24px;
+            height: 24px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fullscreen {
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            max-height: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            border-radius: 0 !important;
         }
 
         .fullscreen-button:hover {
@@ -372,8 +392,14 @@
             .desktop-controls, .start-prompt {
                 display: none;
             }
-            .mobile-controls, .mobile-only {
-                display: block;
+            .mobile-controls {
+                display: block !important;
+            }
+            .mobile-only {
+                display: flex !important;
+            }
+            .fullscreen-button {
+                margin-right: 5px;
             }
         }
             text-shadow: 0 0 8px #00ffff;
@@ -664,10 +690,10 @@
     <div class="game-container">
         <div class="ui">
             <div class="game-stats">
+                <button class="fullscreen-button mobile-only">⤢</button>
                 <span class="score">Score: <span id="score">0</span></span>
                 <span class="lives">Lives: <span id="lives">3</span></span>
                 <span class="level">Level: <span id="level">1</span></span>
-                <button class="fullscreen-button mobile-only">📱 PLAY FULLSCREEN</button>
             </div>
         </div>
         

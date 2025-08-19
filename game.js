@@ -86,60 +86,101 @@ const directions = [
 // Initialize audio
 function initAudio() {
     // Only create audio context after user interaction
-    document.addEventListener('click', initAudioContext, { once: true });
-    document.addEventListener('keydown', initAudioContext, { once: true });
-    document.addEventListener('touchstart', initAudioContext, { once: true });
+    document.addEventListener('click', initAudioContext);
+    document.addEventListener('keydown', initAudioContext);
+    document.addEventListener('touchstart', initAudioContext);
+    
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 }
 
-function initAudioContext() {
+function handleVisibilityChange() {
+    if (document.visibilityState === 'visible' && audioContext) {
+        audioContext.resume();
+    }
+}
+
+async function initAudioContext() {
     if (!audioContext) {
         try {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
         } catch (e) {
             console.log('Web Audio API not supported');
+            return;
+        }
+    }
+    
+    // Resume audio context if it was suspended
+    if (audioContext.state === 'suspended') {
+        try {
+            await audioContext.resume();
+        } catch (e) {
+            console.log('Could not resume audio context:', e);
         }
     }
 }
 
 // Create sound effect
-function createSound(frequency, duration, type = 'sine') {
+async function createSound(frequency, duration, type = 'sine') {
     if (!audioContext) return;
+    
+    // Try to resume the audio context if it's suspended
+    if (audioContext.state === 'suspended') {
+        try {
+            await audioContext.resume();
+        } catch (e) {
+            console.log('Could not resume audio context:', e);
+            return;
+        }
+    }
 
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    try {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
 
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-    oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+        oscillator.type = type;
 
-    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+        // Reduced volume for mobile devices
+        const volume = ('ontouchstart' in window) ? 0.05 : 0.1;
+        gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
 
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + duration);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + duration);
+    } catch (e) {
+        console.log('Error creating sound:', e);
+    }
 }
 
 // Play sound effects
-function playSound(soundType) {
+async function playSound(soundType) {
+    if (!audioContext || audioContext.state !== 'running') {
+        await initAudioContext();
+    }
+
     switch (soundType) {
         case 'dot':
-            createSound(800, 0.1);
+            await createSound(800, 0.1);
             break;
         case 'powerPellet':
-            createSound(400, 0.3);
+            await createSound(400, 0.3);
             break;
         case 'eatGhost':
-            createSound(600, 0.5);
+            await createSound(600, 0.5);
             break;
         case 'death':
-            createSound(200, 1.0, 'sawtooth');
+            await createSound(200, 1.0, 'sawtooth');
             break;
         case 'levelComplete':
-            createSound(1000, 0.2);
-            setTimeout(() => createSound(1200, 0.2), 200);
-            setTimeout(() => createSound(1400, 0.2), 400);
+            await createSound(1000, 0.2);
+            await new Promise(resolve => setTimeout(resolve, 200));
+            await createSound(1200, 0.2);
+            await new Promise(resolve => setTimeout(resolve, 200));
+            await createSound(1400, 0.2);
             break;
     }
 }

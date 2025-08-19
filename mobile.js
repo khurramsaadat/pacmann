@@ -22,28 +22,44 @@ const fullscreenAPI = {
 const fullscreenButton = document.querySelector('.fullscreen-button');
 
 // Handle fullscreen changes
-function toggleFullscreen() {
+async function toggleFullscreen() {
     const gameContainer = document.querySelector('.game-container');
     
-    if (!document.fullscreenElement) {
-        // Enter fullscreen
-        if (fullscreenAPI.enter) {
-            fullscreenAPI.enter.call(gameContainer);
+    try {
+        if (!document.fullscreenElement) {
+            // Enter fullscreen
+            if (gameContainer.requestFullscreen) {
+                await gameContainer.requestFullscreen();
+            } else if (gameContainer.webkitRequestFullscreen) {
+                await gameContainer.webkitRequestFullscreen();
+            } else if (gameContainer.msRequestFullscreen) {
+                await gameContainer.msRequestFullscreen();
+            }
+            
             gameContainer.classList.add('fullscreen');
             
             // Try to lock orientation
             if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape').catch(() => {
-                    // Silently fail if orientation lock is not supported
-                });
+                try {
+                    await screen.orientation.lock('landscape');
+                } catch (e) {
+                    console.log('Orientation lock not supported');
+                }
             }
-        }
-    } else {
-        // Exit fullscreen
-        if (fullscreenAPI.exit) {
-            fullscreenAPI.exit.call(document);
+        } else {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                await document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                await document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                await document.msExitFullscreen();
+            }
+            
             gameContainer.classList.remove('fullscreen');
         }
+    } catch (err) {
+        console.log('Fullscreen API error:', err);
     }
 }
 
