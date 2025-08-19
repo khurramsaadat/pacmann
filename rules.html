@@ -397,7 +397,129 @@
                 <h2>🌀 Tunnels</h2>
                 <p>Use the tunnels on the sides to quickly escape from ghosts or reach other parts of the maze.</p>
             </div>
+
+            <div class="rule-item documentation-section">
+                <h2>📚 Documentation</h2>
+                
+                <div class="doc-subsection">
+                    <h3>Setup Guide</h3>
+                    <ol>
+                        <li>Clone the repository: <code>git clone https://github.com/khurramsaadat/pac-man.git</code></li>
+                        <li>Navigate to the project directory: <code>cd pac-man</code></li>
+                        <li>Start a local server (e.g., using Python):
+                            <code>python -m http.server 8000</code>
+                        </li>
+                        <li>Open your browser and visit: <code>http://localhost:8000</code></li>
+                    </ol>
+                </div>
+
+                <div class="doc-subsection">
+                    <h3>Architecture Overview</h3>
+                    <ul>
+                        <li><strong>game.js</strong>: Core game logic, movement, collision detection</li>
+                        <li><strong>mobile.js</strong>: Mobile-specific features, touch controls, fullscreen</li>
+                        <li><strong>index.html</strong>: Main game interface and styling</li>
+                        <li><strong>rules.html</strong>: Game documentation and rules</li>
+                    </ul>
+                </div>
+
+                <div class="doc-subsection">
+                    <h3>API Documentation</h3>
+                    <ul>
+                        <li><strong>Game State Management</strong>: start, pause, resume, restart functions</li>
+                        <li><strong>Movement API</strong>: Direction controls, collision detection</li>
+                        <li><strong>Ghost AI</strong>: Chase, scatter, frightened modes</li>
+                        <li><strong>Sound System</strong>: Audio effects, background music</li>
+                        <li><strong>Mobile API</strong>: Touch controls, fullscreen management</li>
+                    </ul>
+                </div>
+
+                <div class="doc-subsection">
+                    <h3>FAQ</h3>
+                    <dl>
+                        <dt>Q: How do I start the game?</dt>
+                        <dd>A: Press SPACEBAR on desktop or tap the screen on mobile devices.</dd>
+                        
+                        <dt>Q: How do I pause the game?</dt>
+                        <dd>A: Press ESC on desktop or use two-finger tap on mobile.</dd>
+                        
+                        <dt>Q: What do the different ghosts do?</dt>
+                        <dd>A: Each ghost has unique behavior: Blinky chases directly, Pinky tries to ambush, Inky is unpredictable, and Clyde patrols his area.</dd>
+                        
+                        <dt>Q: How do Power Pellets work?</dt>
+                        <dd>A: Power Pellets make ghosts vulnerable and blue. Eating them in this state gives bonus points.</dd>
+                        
+                        <dt>Q: Does the game work on mobile?</dt>
+                        <dd>A: Yes! Use swipe gestures to move and two-finger tap to pause. Fullscreen mode available.</dd>
+                    </dl>
+                </div>
+            </div>
         </div>
+        <footer class="copyright">
+            <p>&copy; 2024 Pac-Man Web Game. Original Pac-Man game &copy; BANDAI NAMCO Entertainment Inc. This is an educational project and is not affiliated with or endorsed by BANDAI NAMCO.</p>
+        </footer>
     </div>
+
+    <style>
+        .documentation-section {
+            grid-column: 1 / -1;
+        }
+
+        .doc-subsection {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            border: 1px solid rgba(0, 0, 255, 0.3);
+        }
+
+        .doc-subsection h3 {
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #ffff00;
+        }
+
+        dl {
+            margin: 0;
+        }
+
+        dt {
+            color: #00ffff;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        dd {
+            margin-left: 20px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .copyright {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 255, 0.3);
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .doc-subsection {
+                padding: 10px;
+            }
+
+            code {
+                word-break: break-all;
+            }
+        }
+    </style>
 </body>
 </html>
